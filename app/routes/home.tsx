@@ -1,14 +1,30 @@
 import { useState } from "react";
 import type { Route } from "./+types/home";
 import { useNavigate } from "react-router";
-
+import { useIp } from "../context/IpContext";
+import webSocketService from "~/webSocketService";
 export default function Home() {
-
-  const [ip, setIp] = useState("");
+  const {ip, setIp} = useIp();
   const handleChange = (e) => setIp(e.target.value);
 
     const handleSubmit = () => {
-    alert(`Adresse IP saisie : ${ip}`);
+    try {
+      // const ws = new webSocketService(`ws://${ip}:8887`);
+
+      // ws.connect = () => {
+      //   console.log("Connecté ✅");
+      //   navigate('/inventory');
+        
+      // };
+      const ws = new WebSocket(`ws://${ip}:8887`);
+      ws.onopen = () =>{
+        console.log("Connecté ✅");
+        ws.onclose
+        navigate('/inventory');
+      }
+    } catch (error) {
+      console.log("Erreur critique ❌");
+    }
   };
 
   const navigate = useNavigate()
@@ -31,7 +47,7 @@ export default function Home() {
         className="border rounded px-3 py-2 w-full max-w-xs"
       />
         <button
-          onClick={() => navigate('/inventory')}
+          onClick={() => handleSubmit()}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
           Commencer

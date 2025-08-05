@@ -1,7 +1,10 @@
 
 type MessageCallBack = (data: any) => void;
+import { useIp } from "./context/IpContext";
 
 class webSocketService {
+
+
     private socket : WebSocket | null = null;
     private url : string;
     private listeners : MessageCallBack[] = [];
@@ -58,5 +61,5 @@ class webSocketService {
     }
 }
 
-const wsService = new webSocketService("ws://localhost:8887");
-export default wsService;
+// const wsService = new webSocketService(`ws://${useIp}:8887`);
+export default webSocketService;

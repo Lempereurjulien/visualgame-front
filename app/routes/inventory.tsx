@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import wsService from "~/webSocketService";
+import WebSocketManager from "~/components/WebSockerManager";
+import webSocketService from "~/webSocketService";
+import { useIp } from "~/context/IpContext";
 export default function Inventory() {
   // Exemple de données statiques (à remplacer par des props ou un fetch)
   const [players, setPlayer] = useState();
@@ -19,8 +22,9 @@ export default function Inventory() {
 //       ],
 //     },
 //   ];
-
+  const {ip} = useIp();
   useEffect(() =>{
+    const wsService = new webSocketService(`ws://${ip}:8887`);
     wsService.connect();
 
     const handleMessage = (data : any) =>{
