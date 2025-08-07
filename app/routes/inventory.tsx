@@ -6,25 +6,9 @@ import { useIp } from "~/context/IpContext";
 export default function Inventory() {
   // Exemple de données statiques (à remplacer par des props ou un fetch)
   const [players, setPlayer] = useState();
-//   const players = [
-//     {
-//       playerName: "PlayerOne",
-//       items: [
-//         { material: "diamond_sword", amount: 1 },
-//         { material: "apple", amount: 5 },
-//       ],
-//     },
-//     {
-//       playerName: "PlayerTwo",
-//       items: [
-//         { material: "bow", amount: 1 },
-//         { material: "arrow", amount: 20 },
-//       ],
-//     },
-//   ];
-  const {ip} = useIp();
+  const {ip, setIp} = useIp();
   useEffect(() =>{
-    const wsService = new webSocketService(`ws://${ip}:8887`);
+    const wsService = new webSocketService(`ws://${localStorage.getItem("ip")}:8887`);
     wsService.connect();
 
     const handleMessage = (data : any) =>{
