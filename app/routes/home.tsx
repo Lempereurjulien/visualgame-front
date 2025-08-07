@@ -3,24 +3,33 @@ import type { Route } from "./+types/home";
 import { useNavigate } from "react-router";
 import { useIp } from "../context/IpContext";
 import webSocketService from "~/webSocketService";
+import { useSparkService } from "~/service/sparkService";
+
+
 export default function Home() {
+  const { verifCode } = useSparkService();
   const {ip, setIp} = useIp();
-  const handleChange = (e) => setIp(e.target.value);
+  const [ipPage, setIpPage] = useState(true);
+  const [uuid, setUuid] = useState("");
+  const handleChange = (e : any) => setIp(e.target.value);
 
     const handleSubmit = () => {
     try {
-      // const ws = new webSocketService(`ws://${ip}:8887`);
-
-      // ws.connect = () => {
-      //   console.log("Connecté ✅");
-      //   navigate('/inventory');
-        
-      // };
       const ws = new WebSocket(`ws://${ip}:8887`);
-      ws.onopen = () =>{
+      ws.onopen = async () =>{
         console.log("Connecté ✅");
         ws.onclose
-        navigate('/inventory');
+        setIpPage(false);
+        if(!ipPage){
+          const data = await verifCode(uuid)
+          if(data.response){
+            navigate('/inventory');
+          }
+          else{
+            //Marqué une erreur
+            alert("Code non correcte")
+          }
+        }
       }
     } catch (error) {
       console.log("Erreur critique ❌");
@@ -35,6 +44,8 @@ export default function Home() {
         <p className="text-lg text-gray-600 mb-6">
           Ceci est une page d’accueil minimaliste avec Tailwind CSS.
         </p>
+        {ipPage && (
+          <>
         <label htmlFor="ip" className="block mb-2 font-semibold">
         Entrez une adresse IP :
       </label>
@@ -46,6 +57,24 @@ export default function Home() {
         placeholder="Ex: 192.168.0.1"
         className="border rounded px-3 py-2 w-full max-w-xs"
       />
+      </>
+        )}
+        {!ipPage && (
+          <>
+        <label htmlFor="uuid" className="block mb-2 font-semibold">
+        Code :
+      </label>
+      <input
+        id="uuid"
+        type="text"
+        value={uuid}
+        onChange={(e) => setUuid(e.target.value)}
+        placeholder="Ex: 1234"
+        className="border rounded px-3 py-2 w-full max-w-xs"
+      />
+      </>
+        )}
+
         <button
           onClick={() => handleSubmit()}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
