@@ -79,7 +79,7 @@ export default function Home() {
               type="text"
               value={uuid}
               onChange={(e) => setUuid(e.target.value)}
-              placeholder="Ex: 1234"
+              placeholder="Ex: B5E4"
               className="border rounded px-3 py-2 w-full max-w-xs"
             />
           </>
