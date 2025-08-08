@@ -1,14 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import wsService from "~/webSocketService";
-import WebSocketManager from "~/components/WebSockerManager";
-import webSocketService from "~/webSocketService";
+import { useEffect, useRef, useState } from "react";
 import { useIp } from "~/context/IpContext";
+import { useSparkService } from "~/service/sparkService";
+import { useNavigate } from "react-router";
+import webSocketService from "~/webSocketService";
 export default function Inventory() {
   // Exemple de données statiques (à remplacer par des props ou un fetch)
   const [players, setPlayer] = useState<any[]>([]);
   const { ip } = useIp();
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { starterPack } = useSparkService()
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const wsService = new webSocketService(`ws://${ip}:8887`);
     wsService.connect();
@@ -40,9 +44,23 @@ export default function Inventory() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openIndex]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("ip");
+    navigate("/"); // Retour à la page home
+  };
+
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <h1 className="text-3xl font-bold mb-8">Inventaire des joueurs</h1>
+      {/* Bouton Déconnexion */}
+      <div className="w-full flex justify-start mb-6">
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Déconnexion
+        </button>
+      </div>
+      <h1 className="text-3xl font-bold mb-8">Inventaire des joueurs ({players.length})</h1>
 
       <div className="w-full max-w-4xl grid gap-6">
         {players?.map((player: any, index) => (
@@ -74,7 +92,7 @@ export default function Inventory() {
               </button>
               {openIndex === index && (
                 <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 w-40 bg-white border rounded shadow-lg z-10">
-                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100" onClick={() => starterPack(player.playerName)}>
                     Starter pack
                   </button>
                   <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">

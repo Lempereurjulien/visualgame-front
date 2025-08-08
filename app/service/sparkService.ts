@@ -17,5 +17,15 @@ function verifCode(uuid: string): Promise<any> {
     });
 }
 
-  return { verifCode };
+function starterPack(namePlayer : string) : Promise<any>{
+  return fetch(`http://${ip}:4567/starterpack`,{
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({namePlayer})
+  })
+}
+
+  return { verifCode, starterPack };
 }

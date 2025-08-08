@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { Route } from "./+types/home";
 import { useNavigate } from "react-router";
 import { useIp } from "../context/IpContext";
 import webSocketService from "~/webSocketService";
@@ -46,7 +45,7 @@ export default function Home() {
     }
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center p-6 bg-white rounded-xl shadow-lg">
