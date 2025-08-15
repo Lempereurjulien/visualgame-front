@@ -1,9 +1,8 @@
 
 type MessageCallBack = (data: any) => void;
-import { useIp } from "./context/IpContext";
+
 
 class webSocketService {
-
 
     private socket : WebSocket | null = null;
     private url : string;
@@ -24,6 +23,7 @@ class webSocketService {
 
         this.socket.onmessage = (event) =>{
             const data = JSON.parse(event.data);
+            console.log(data);
             this.listeners.forEach((cb) => cb(data));
         };
 
@@ -32,7 +32,7 @@ class webSocketService {
             this.socket = null;
         };
 
-        this.socket.onerror = (error) =>{
+        this.socket.onerror = (error) =>{   
             console.log("Erreur Websocket : ", error);
         };
     }
@@ -58,6 +58,10 @@ class webSocketService {
             this.socket.close();
             this.socket = null;
         }
+    }
+
+    getSocket(){
+        return this.socket;
     }
 }
 

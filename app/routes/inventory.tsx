@@ -14,10 +14,13 @@ export default function Inventory() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     const wsService = new webSocketService(`ws://${ip}:8887`);
     wsService.connect();
 
     const handleMessage = (data: any) => {
+      console.log(data);
+      
       setPlayer(data)
     }
 
@@ -65,7 +68,7 @@ export default function Inventory() {
       <div className="w-full max-w-4xl grid gap-6">
         {players?.map((player: any, index) => (
           <section
-            key={player.playerName}
+            key={player.name}
             ref={el => (containerRefs.current[index] = el as HTMLDivElement)}
             className="bg-white rounded-lg shadow-md p-6"
           >
@@ -73,12 +76,12 @@ export default function Inventory() {
             <div className="relative inline-flex items-center gap-4 mb-4">
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-sm">
                 <img
-                  src={`https://minotar.net/helm/${player.playerName}/100.png`}
-                  alt={player.playerName}
+                  src={`https://minotar.net/helm/${player.name}/100.png`}
+                  alt={player.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h2 className="text-2xl font-semibold" >{player.playerName}</h2>
+              <h2 className="text-2xl font-semibold" >{player.name}</h2>
               <button
                 onClick={() =>
                   setOpenIndex(openIndex === index ? null : index)
@@ -92,7 +95,7 @@ export default function Inventory() {
               </button>
               {openIndex === index && (
                 <div className="absolute top-1/2 left-full ml-2 -translate-y-1/2 w-40 bg-white border rounded shadow-lg z-10">
-                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100" onClick={() => starterPack(player.playerName)}>
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100" onClick={() => starterPack(player.name)}>
                     Starter pack
                   </button>
                   <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">
@@ -116,7 +119,7 @@ export default function Inventory() {
                   <div className="w-12 h-12 mb-2 bg-gray-300 rounded"></div>
 
                   <span className="text-sm font-medium capitalize">
-                    {item.material.replace(/_/g, " ")}
+                    {item.name.replace(/_/g, " ")}
                   </span>
                   {item.amount > 1 && (
                     <span className="text-xs text-gray-600">x{item.amount}</span>
