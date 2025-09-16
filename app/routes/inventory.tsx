@@ -14,13 +14,13 @@ export default function Inventory() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
+
     const wsService = new webSocketService(`ws://${ip}:8887`);
     wsService.connect();
 
     const handleMessage = (data: any) => {
       console.log(data);
-      
+
       setPlayer(data)
     }
 
@@ -81,7 +81,17 @@ export default function Inventory() {
                   className="w-full h-full object-cover"
                 />
               </div>
+              <div>
+              </div>
               <h2 className="text-2xl font-semibold" >{player.name}</h2>
+
+              {player.status ? (
+                <span className="text-sm">🟢</span>
+              ) : (
+                <span className="text-sm flex items-center gap-1">
+                  ☠️
+                </span>
+              )}
               <button
                 onClick={() =>
                   setOpenIndex(openIndex === index ? null : index)
@@ -106,6 +116,9 @@ export default function Inventory() {
                   </button>
                 </div>
               )}
+            <div className="100%">
+              
+            </div>
             </div>
 
             {/* Inventaire */}
@@ -118,7 +131,7 @@ export default function Inventory() {
                   {/* Remplace par une image si possible */}
                   <div className="w-12 h-12 mb-2 bg-gray-300 rounded"></div>
 
-                  <span className="text-sm font-medium capitalize">
+                  <span className="text-sm text-center font-medium capitalize">
                     {item.name.replace(/_/g, " ")}
                   </span>
                   {item.amount > 1 && (
