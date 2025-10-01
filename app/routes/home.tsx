@@ -47,12 +47,13 @@ export default function Home() {
 
   const navigate = useNavigate();
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
+    <div className="h-screen flex items-center justify-around bg-gray-100 flex-col">
       <div className="text-center p-6 bg-white rounded-xl shadow-lg">
-        <h1 className="text-4xl font-bold mb-4 text-gray-800">Bienvenue sur mon site</h1>
+        <h1 className="text-4xl font-bold mb-4 text-gray-800">Bienvenue sur Visual Game</h1>
         <p className="text-lg text-gray-600 mb-6">
-          Ceci est une page d’accueil minimaliste avec Tailwind CSS.
+          Pour commencer à utiliser Visual game, veuillez lire les <a className="font-bold underline" onClick={() => navigate("/prerequis")}>prérequis</a>.
         </p>
+        <p className="text-lg text-gray-600 mb-6"></p>
         {ipPage && (
           <>
             <label htmlFor="ip" className="block mb-2 font-semibold">
@@ -91,6 +92,9 @@ export default function Home() {
           Commencer
         </button>
       </div>
+      <footer className="text-gray-500">
+        © Version 1.0.0 - inspiré par Minecraft
+      </footer>
     </div>
 
   )

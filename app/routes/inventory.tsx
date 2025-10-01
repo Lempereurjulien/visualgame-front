@@ -108,12 +108,12 @@ export default function Inventory() {
                   <button className="block w-full px-4 py-2 text-left hover:bg-gray-100" onClick={() => starterPack(player.name)}>
                     Starter pack
                   </button>
-                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">
+                  {/* <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">
                     Donner item
                   </button>
                   <button className="block w-full px-4 py-2 text-left hover:bg-gray-100 text-red-600">
                     Supprimer
-                  </button>
+                  </button> */}
                 </div>
               )}
             <div className="100%">
