@@ -3,6 +3,7 @@ import { useIp } from "~/context/IpContext";
 import { useSparkService } from "~/service/sparkService";
 import { useNavigate } from "react-router";
 import webSocketService from "~/webSocketService";
+import ItemIcon from "~/components/ItemIcon";
 export default function Inventory() {
   // Exemple de données statiques (à remplacer par des props ou un fetch)
   const [players, setPlayer] = useState<any[]>([]);
@@ -20,7 +21,6 @@ export default function Inventory() {
 
     const handleMessage = (data: any) => {
       var playersJson = JSON.parse(data.players);
-      // console.log("data in handle message", JSON.parse(data.players));
           setPlayer(playersJson)
     }
 
@@ -108,12 +108,6 @@ export default function Inventory() {
                   <button className="block w-full px-4 py-2 text-left hover:bg-gray-100" onClick={() => starterPack(player.name)}>
                     Starter pack
                   </button>
-                  {/* <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">
-                    Donner item
-                  </button>
-                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100 text-red-600">
-                    Supprimer
-                  </button> */}
                 </div>
               )}
             <div className="100%">
@@ -129,7 +123,9 @@ export default function Inventory() {
                   className="flex flex-col items-center justify-center border border-gray-300 rounded-md p-3 bg-gray-50"
                 >
                   {/* Remplace par une image si possible */}
-                  <div className="w-12 h-12 mb-2 bg-gray-300 rounded"></div>
+                  <div className="w-12 h-12 mb-2 bg-gray-300 rounded">
+                    <ItemIcon name={item.name} />
+                  </div>
 
                   <span className="text-sm text-center font-medium capitalize">
                     {item.name.replace(/_/g, " ")}
