@@ -19,9 +19,9 @@ export default function Inventory() {
     wsService.connect();
 
     const handleMessage = (data: any) => {
-      console.log(data);
-
-      setPlayer(data)
+      var playersJson = JSON.parse(data.players);
+      // console.log("data in handle message", JSON.parse(data.players));
+          setPlayer(playersJson)
     }
 
     wsService.onMessage(handleMessage);
@@ -63,7 +63,7 @@ export default function Inventory() {
           Déconnexion
         </button>
       </div>
-      <h1 className="text-3xl font-bold mb-8">Inventaire des joueurs ({players.length})</h1>
+      <h1 className="text-3xl font-bold mb-8">Inventaire des joueurs ({players?.length})</h1>
 
       <div className="w-full max-w-4xl grid gap-6">
         {players?.map((player: any, index) => (

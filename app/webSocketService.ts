@@ -23,7 +23,6 @@ class webSocketService {
 
         this.socket.onmessage = (event) =>{
             const data = JSON.parse(event.data);
-            console.log(data);
             this.listeners.forEach((cb) => cb(data));
         };
 
