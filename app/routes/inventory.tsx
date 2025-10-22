@@ -7,10 +7,12 @@ import ItemIcon from "~/components/ItemIcon";
 export default function Inventory() {
   // Exemple de données statiques (à remplacer par des props ou un fetch)
   const [players, setPlayer] = useState<any[]>([]);
+  const [map, setMap] = useState<any[]>([]);
+  const [isDay, setIsDay] = useState<boolean>(true);
   const { ip } = useIp();
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const { starterPack } = useSparkService()
+  const { starterPack,setDay } = useSparkService()
 
   const navigate = useNavigate();
 
@@ -20,8 +22,15 @@ export default function Inventory() {
     wsService.connect();
 
     const handleMessage = (data: any) => {
-      var playersJson = JSON.parse(data.players);
-          setPlayer(playersJson)
+      if(data.type == "players"){
+        var playersJson = data.data;
+            setPlayer(playersJson);
+      }      
+      if(data.type == "map"){
+        setIsDay(data.data.isDay);
+        
+      }
+          
     }
 
     wsService.onMessage(handleMessage);
@@ -31,6 +40,13 @@ export default function Inventory() {
       wsService.disconnect();
     }
   }, [])
+
+  const changeDay = () =>{
+    if(!isDay){
+      setDay()
+    }
+    
+  }
 
   // Fermer le menu au clic extérieur
   useEffect(() => {
@@ -64,6 +80,12 @@ export default function Inventory() {
         </button>
       </div>
       <h1 className="text-3xl font-bold mb-8">Inventaire des joueurs ({players?.length})</h1>
+      <div className="w-full flex justify-end">
+        <div className="flex flex-col items-center justify-center border border-gray-300 rounded-md p-3 bg-gray-50" onClick={() => changeDay()}>
+        <img src={isDay ? "sun.png" : "moon.png"} alt="ensoleillement icônes" className="w-12 h12"/>
+        </div>
+
+      </div>
 
       <div className="w-full max-w-4xl grid gap-6">
         {players?.map((player: any, index) => (

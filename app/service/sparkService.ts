@@ -27,5 +27,14 @@ function starterPack(namePlayer : string) : Promise<any>{
   })
 }
 
-  return { verifCode, starterPack };
+function setDay() : Promise<any>{
+  return fetch(`http://${ip}:4567/setDay`, {
+    method :"GET",
+    headers : {
+      "Content-Type" : "application/json"
+    }
+  })
+}
+
+  return { verifCode, starterPack, setDay };
 }
